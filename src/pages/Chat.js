@@ -6,8 +6,23 @@ import MessageBubble from "components/MessageBubble";
 import ChatEvent from "components/ChatEvent";
 import WebSocketEventListenerStore from "lib/WebSocketEventListenerStore";
 
+function useStayScrolled(scrollableElemRef, deps) {
+  const chatScrolledToBottomRef = useRef(false);
+  useEffect(() => {
+    if (chatScrolledToBottomRef.current) {
+      scrollableElemRef.current.scrollTop = scrollableElemRef.current.scrollHeight;
+    }
+  }, deps);
+  useEffect(() => {
+    const { scrollHeight, scrollTop, clientHeight } = scrollableElemRef.current;
+    const isAtBottom = scrollHeight - scrollTop <= clientHeight;
+    chatScrolledToBottomRef.current = isAtBottom;
+  });
+}
+
 function ChatPage({ user, ws }) {
   const [chatEvents, setChatEvents] = useState([]);
+
   useEffect(() => {
     const handleMsg = (evt) => {
       const { type, payload } = JSON.parse(evt.data);
@@ -26,6 +41,13 @@ function ChatPage({ user, ws }) {
       WebSocketEventListenerStore.off("message", handleMsg);
     };
   }, []);
+
+  // keep the chat scrolled to bottom when a new message appears for better UX
+  // (I know that binding it to chatEvents array change instead of
+  // the actual height of the element isn't the best solution, but it simpler
+  // and will work for this task)
+  const chatElemRef = useRef();
+  useStayScrolled(chatElemRef, [chatEvents]);
 
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef();
@@ -65,6 +87,7 @@ function ChatPage({ user, ws }) {
           gridGap: 10,
           alignContent: "start",
         }}
+        ref={chatElemRef}
       >
         {!chatEvents.length && (
           <section
@@ -159,6 +182,7 @@ function ChatPage({ user, ws }) {
         }}
       >
         <Input
+          // not the best UX to set max length for such an input, I know
           maxLength={500}
           ref={inputRef}
           value={inputValue}
