@@ -7,7 +7,6 @@ const initWebsocket = (ref, setWsReadyState) => {
   const ws = new WebSocket("ws://localhost:8080");
   ref.current = ws;
 
-  
   const errHandler = (evt) => {
     setWsReadyState(ws.readyState);
     WebSocketEventListenerStore.emit("error", evt);
@@ -49,6 +48,8 @@ function App() {
     }
   }, [wsReadyState, user]);
 
+  const [error, setError] = useState();
+
   useEffect(() => {
     WebSocketEventListenerStore.on("message", (evt) => {
       const msg = JSON.parse(evt.data);
@@ -59,8 +60,14 @@ function App() {
           setUser(payload.user);
           break;
         case "LOGOUT_SUCCESS":
+          setUser(null);
+          break;
         case "LOGOUT_DUE_TO_INACTIVITY":
           setUser(null);
+          setError({
+            type: "LOGOUT_DUE_TO_INACTIVITY",
+            message: "Logged out due to inactivity",
+          });
           break;
         case "ERROR":
           console.error(error);
@@ -82,7 +89,10 @@ function App() {
   // Attempt reconnecting every 5 seconds, if connection is broken
   useEffect(() => {
     if (wsReadyState === WebSocket.CLOSED) {
-      const interval = setInterval(() => initWebsocket(wsRef, setWsReadyState), 5000);
+      const interval = setInterval(
+        () => initWebsocket(wsRef, setWsReadyState),
+        5000
+      );
 
       return () => {
         clearInterval(interval);
@@ -104,7 +114,13 @@ function App() {
         if (user) {
           return <ChatPage user={user} ws={ws} />;
         }
-        return <LandingPage wsReadyState={wsReadyState} ws={ws} />;
+        return (
+          <LandingPage
+            errorState={[error, setError]}
+            wsReadyState={wsReadyState}
+            ws={ws}
+          />
+        );
       })()}
     </div>
   );

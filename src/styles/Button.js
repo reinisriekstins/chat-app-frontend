@@ -7,20 +7,20 @@ const Button = styled.button`
   padding: 10px 20px;
   outline: none;
   border: none;
-  background: ${props => Colors[`${props.theme}500`]};
+  background: ${(props) => Colors[`${props.theme}500`]};
   color: white;
 
   &:focus {
-    background: ${props => Colors[`${props.theme}600`]};
+    background: ${(props) => Colors[`${props.theme}600`]};
   }
   &[disabled] {
-    background: ${props => Colors[`${props.theme}200`]};
+    background: ${(props) => Colors[`${props.theme}200`]};
     cursor: not-allowed;
   }
 `;
 
 Button.defaultProps = {
-  theme: 'primary',
+  theme: "primary",
 };
 
 export default Button;

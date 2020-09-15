@@ -9,8 +9,7 @@ const MessageBubbleStyle = styled.section`
     props.currentUserIsSender ? Colors.info500 : Colors.success500};
   color: white;
   padding: 15px;
-  margin: 0
-    ${(props) => (props.currentUserIsSender ? "0 0 20px" : "20px 0 0")};
+  margin: 0 ${(props) => (props.currentUserIsSender ? "0 0 20px" : "20px 0 0")};
   display: grid;
   word-break: break-all;
 `;
@@ -24,7 +23,9 @@ function MessageBubble({ sender, message, occurredAt, currentUserIsSender }) {
       }}
     >
       <MessageBubbleStyle currentUserIsSender={currentUserIsSender}>
-        <span style={{ fontWeight: "bold" }}>{currentUserIsSender ? 'You' : sender}</span>
+        <span style={{ fontWeight: "bold" }}>
+          {currentUserIsSender ? "You" : sender}
+        </span>
         {message}
       </MessageBubbleStyle>
     </div>

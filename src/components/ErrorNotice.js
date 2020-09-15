@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Colors } from 'styles/variables';
+import React from "react";
+import styled from "styled-components";
+import { Colors } from "styles/variables";
 
 const ErrorNoticeStyle = styled.div`
   background: ${Colors.danger500};
@@ -11,7 +11,9 @@ const ErrorNoticeStyle = styled.div`
 function ErrorNotice({ title, text }) {
   return (
     <ErrorNoticeStyle>
-      {title && <strong style={{ display: 'block', marginBottom: 5 }}>title</strong>}
+      {title && (
+        <strong style={{ display: "block", marginBottom: 5 }}>title</strong>
+      )}
       {text}
     </ErrorNoticeStyle>
   );

@@ -8,12 +8,14 @@
 const wsEvtListenerStore = {};
 export default {
   on(evtType, listener) {
-    if (typeof listener !== 'function') {
-      throw new Error('Event listener is not a function');
+    if (typeof listener !== "function") {
+      throw new Error("Event listener is not a function");
     }
     if (wsEvtListenerStore[evtType]) {
-      if (wsEvtListenerStore[evtType].find(func => func === listener)) {
-        console.warn('Trying to add a function as an event listener moer than once');
+      if (wsEvtListenerStore[evtType].find((func) => func === listener)) {
+        console.warn(
+          "Trying to add a function as an event listener moer than once"
+        );
         return;
       }
 
@@ -23,13 +25,15 @@ export default {
     }
   },
   off(evtType, listener) {
-    if (typeof listener !== 'function') {
-      throw new Error('Event listener is not a function');
+    if (typeof listener !== "function") {
+      throw new Error("Event listener is not a function");
     }
 
     const indexOfListener = wsEvtListenerStore[evtType]?.indexOf(listener);
-    if (indexOfListener === -1 || typeof indexOfListener !== 'number') {
-      console.warn(`The event listener you're trying to remove was not found for event type ${evtType}`);
+    if (indexOfListener === -1 || typeof indexOfListener !== "number") {
+      console.warn(
+        `The event listener you're trying to remove was not found for event type ${evtType}`
+      );
       return;
     }
 
@@ -37,7 +41,7 @@ export default {
   },
   emit(evtType, ...args) {
     if (wsEvtListenerStore[evtType]) {
-      wsEvtListenerStore[evtType].forEach(listener => listener(...args));
+      wsEvtListenerStore[evtType].forEach((listener) => listener(...args));
     }
   },
 };

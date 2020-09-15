@@ -36,7 +36,7 @@ function ChatPage({ user, ws }) {
   return (
     <div
       style={{
-        overflowY: "scroll",
+        overflowY: "hidden",
         display: "grid",
         gridTemplateRows: "auto 1fr auto",
         borderRight: "1px solid #dfe1e5",
@@ -60,7 +60,7 @@ function ChatPage({ user, ws }) {
       <div
         style={{
           overflowY: "scroll",
-          margin: "0 10px",
+          padding: "0 10px",
           display: "grid",
           gridGap: 10,
           alignContent: "start",
@@ -73,10 +73,10 @@ function ChatPage({ user, ws }) {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              textAlign: 'center',
-              color: '#929396',
-              lineHeight: '1.5rem',
-              width: '100%',
+              textAlign: "center",
+              color: "#929396",
+              lineHeight: "1.5rem",
+              width: "100%",
             }}
           >
             No one has posted since you joined
